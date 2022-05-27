@@ -1,0 +1,40 @@
+<div>
+  <h1 class="myfont">main-app</h1>
+</div>
+<div>
+  <nav>
+    <a nz-button nzType="link" [routerLink]="['/page0']" routerLinkActive="active">page0</a> |
+    <a nz-button nzType="link" [routerLink]="['/page6']" routerLinkActive="active">page6</a> |
+    <a nz-button nzType="link" [routerLink]="['/app/sub-app1']" routerLinkActive="active">sub-app1</a> |
+    <a nz-button nzType="link" [routerLink]="['/app/sub-app2']" routerLinkActive="active">sub-app2</a> |
+    <button nz-button nzType="primary" (click)="gotoSubApp1()">goto sub-app1</button>
+    |
+    <button nz-button nzType="primary" (click)="gotoSubApp2()">goto sub-app2</button>
+    |
+    <button nz-button nzType="primary" (click)="sendGlobalData1()">sendGlobalData1</button>
+    |
+    <button nz-button nzType="primary" (click)="sendGlobalData2()">sendGlobalData2</button>
+    |
+    <button nz-button nzType="primary" (click)="sendAppData1()">sendAppData1(sub-app1)</button>
+    |
+    <button nz-button nzType="primary" (click)="sendAppData2()">sendAppData2(sub-app1)</button>
+    |
+    <button nz-button nzType="primary" (click)="sendAppData3()">sendAppData3(sub-app2)</button>
+    |
+    <button nz-button nzType="primary" (click)="getGlobalData()">getGlobalData</button>
+    |
+  </nav>
+</div>
+<div>
+  <input nz-input type="text" name="name" required [(ngModel)]="name" style="width: 300px;"> | <label>name: {{ name }}</label>
+</div>
+<hr/>
+<div style="width: 100%;height: 500px;">
+  <div *ngIf="loadSubApp" class="loadSubContainer">
+    <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+  </div>
+  <router-outlet name=""></router-outlet>
+</div>
+<ng-template #customErrorTemplate>
+  <nz-result nzTitle="加载失败" nzStatus="error" nzSubTitle="加载子应用失败，请联系管理员！"></nz-result>
+</ng-template>

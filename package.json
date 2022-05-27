@@ -1,0 +1,49 @@
+{
+  "name": "@lanaqi/aqi-microapp",
+  "version": "12.0.0-alpha",
+  "scripts": {
+    "serve:ma-demo-main:dev": "ng serve ma-demo-main --port=4200 --configuration=development",
+    "serve:ma-demo-app1:dev": "ng serve ma-demo-app1 --port=4201 --configuration=development",
+    "serve:ma-demo-app2:dev": "ng serve ma-demo-app2 --port=4202 --configuration=development",
+    "build:ng-microapp:dev": "ng build ng-microapp --configuration=development",
+    "build:ng-microapp:prod": "ng build ng-microapp --configuration=production",
+    "publish:ng-microapp:dev": "npm run build:ng-microapp:dev && cd ./dist/ng-microapp && npm publish",
+    "publish:ng-microapp:prod": "npm run build:ng-microapp:prod && cd ./dist/ng-microapp && npm publish && cd ../../ && npm run clean:dist",
+    "clean:dist": "rm -rf ./dist/"
+  },
+  "private": true,
+  "publishConfig": {
+    "registry": "http://nexus.lanaqi.com/repository/npm-distribution/"
+  },
+  "dependencies": {
+    "@angular/animations": "~12.2.0",
+    "@angular/common": "~12.2.0",
+    "@angular/compiler": "~12.2.0",
+    "@angular/core": "~12.2.0",
+    "@angular/forms": "~12.2.0",
+    "@angular/platform-browser": "~12.2.0",
+    "@angular/platform-browser-dynamic": "~12.2.0",
+    "@angular/router": "~12.2.0",
+    "@micro-zoe/micro-app": "~0.8.5",
+    "ng-zorro-antd": "~12.1.0",
+    "rxjs": "~6.6.0",
+    "zone.js": "~0.11.0",
+    "tslib": "~2.3.0"
+  },
+  "devDependencies": {
+    "@angular-builders/custom-webpack": "~12.1.0",
+    "@angular-devkit/build-angular": "~12.2.0",
+    "@angular/cli": "~12.2.0",
+    "@angular/compiler-cli": "~12.2.0",
+    "@types/jasmine": "~3.8.0",
+    "@types/node": "~12.11.0",
+    "jasmine-core": "~3.8.0",
+    "karma": "~6.3.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.0.0",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "~1.7.0",
+    "ng-packagr": "~12.1.0",
+    "typescript": "~4.3.0"
+  }
+}

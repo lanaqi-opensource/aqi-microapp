@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MaDemoMain</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- todo 配置 shares.less 到 angular.json 独立 styles 资源，并不注入，使用手动方式注入，使用 microapp 框架排除属性，微应用环境下生效 -->
+  <link rel="stylesheet" href="shares.css" exclude>
+  <!-- todo 使用 microapp 框架排除属性，微应用环境下生效 -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/zone.js/0.11.5/zone.min.js" exclude></script>
+</head>
+<body>
+  <ma-main-root></ma-main-root>
+</body>
+</html>

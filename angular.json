@@ -1,0 +1,396 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ng-microapp": {
+      "projectType": "library",
+      "root": "projects/ng-microapp",
+      "sourceRoot": "projects/ng-microapp/src",
+      "prefix": "ma",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ng-microapp/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-microapp/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ng-microapp/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular-builders/custom-webpack:karma",
+          "options": {
+            "main": "projects/ng-microapp/src/test.ts",
+            "tsConfig": "projects/ng-microapp/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-microapp/karma.conf.js"
+          }
+        }
+      }
+    },
+    "ma-demo-main": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less",
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:module": {
+          "skipTests": true
+        },
+        "@schematics/angular:resolver": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/ma-demo-main",
+      "sourceRoot": "projects/ma-demo-main/src",
+      "prefix": "ma-main",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./custom-webpack.config.js"
+            },
+            "outputPath": "dist/ma-demo-main",
+            "index": "projects/ma-demo-main/src/index.html",
+            "main": "projects/ma-demo-main/src/main.ts",
+            "polyfills": "projects/ma-demo-main/src/polyfills.ts",
+            "tsConfig": "projects/ma-demo-main/tsconfig.app.json",
+            "inlineStyleLanguage": "less",
+            "assets": [
+              "projects/ma-demo-main/src/favicon.ico",
+              "projects/ma-demo-main/src/assets"
+            ],
+            "styles": [
+              "projects/ma-demo-main/src/styles.less",
+              {
+                "input": "projects/ma-demo-main/src/shares.less",
+                "inject": false,
+                "bundleName": "shares"
+              }
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/ma-demo-main/src/environments/environment.ts",
+                  "with": "projects/ma-demo-main/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "vendorChunk": true
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "ma-demo-main:build:production"
+            },
+            "development": {
+              "browserTarget": "ma-demo-main:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-builders/custom-webpack:extract-i18n",
+          "options": {
+            "browserTarget": "ma-demo-main:build"
+          }
+        }
+      }
+    },
+    "ma-demo-app1": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less",
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:module": {
+          "skipTests": true
+        },
+        "@schematics/angular:resolver": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/ma-demo-app1",
+      "sourceRoot": "projects/ma-demo-app1/src",
+      "prefix": "ma-app1",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./custom-webpack.config.js"
+            },
+            "outputPath": "dist/ma-demo-app1",
+            "index": "projects/ma-demo-app1/src/index.html",
+            "main": "projects/ma-demo-app1/src/main.ts",
+            "polyfills": "projects/ma-demo-app1/src/polyfills.ts",
+            "tsConfig": "projects/ma-demo-app1/tsconfig.app.json",
+            "inlineStyleLanguage": "less",
+            "assets": [
+              "projects/ma-demo-app1/src/favicon.ico",
+              "projects/ma-demo-app1/src/assets"
+            ],
+            "styles": [
+              "projects/ma-demo-app1/src/styles.less",
+              {
+                "input": "projects/ma-demo-main/src/shares.less",
+                "inject": false,
+                "bundleName": "shares"
+              }
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/ma-demo-app1/src/environments/environment.ts",
+                  "with": "projects/ma-demo-app1/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "vendorChunk": true
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "ma-demo-app1:build:production"
+            },
+            "development": {
+              "browserTarget": "ma-demo-app1:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-builders/custom-webpack:extract-i18n",
+          "options": {
+            "browserTarget": "ma-demo-app1:build"
+          }
+        }
+      }
+    },
+    "ma-demo-app2": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less",
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:module": {
+          "skipTests": true
+        },
+        "@schematics/angular:resolver": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/ma-demo-app2",
+      "sourceRoot": "projects/ma-demo-app2/src",
+      "prefix": "ma-app2",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./custom-webpack.config.js"
+            },
+            "outputPath": "dist/ma-demo-app2",
+            "index": "projects/ma-demo-app2/src/index.html",
+            "main": "projects/ma-demo-app2/src/main.ts",
+            "polyfills": "projects/ma-demo-app2/src/polyfills.ts",
+            "tsConfig": "projects/ma-demo-app2/tsconfig.app.json",
+            "inlineStyleLanguage": "less",
+            "assets": [
+              "projects/ma-demo-app2/src/favicon.ico",
+              "projects/ma-demo-app2/src/assets"
+            ],
+            "styles": [
+              "projects/ma-demo-app2/src/styles.less",
+              {
+                "input": "projects/ma-demo-main/src/shares.less",
+                "inject": false,
+                "bundleName": "shares"
+              }
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/ma-demo-app2/src/environments/environment.ts",
+                  "with": "projects/ma-demo-app2/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "vendorChunk": true
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "ma-demo-app2:build:production"
+            },
+            "development": {
+              "browserTarget": "ma-demo-app2:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-builders/custom-webpack:extract-i18n",
+          "options": {
+            "browserTarget": "ma-demo-app2:build"
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "ng-microapp"
+}

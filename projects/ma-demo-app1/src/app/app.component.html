@@ -1,0 +1,30 @@
+<div>
+  <h1 class="myfont">sub-app1</h1>
+</div>
+<div>
+  <nav>
+    <a nz-button nzType="link" [routerLink]="['page0']" routerLinkActive="active">page0</a> |
+    <a nz-button nzType="link" [routerLink]="['page1']" routerLinkActive="active">page1</a> |
+    <a nz-button nzType="link" [routerLink]="['page2']" routerLinkActive="active">page2</a> |
+    <button nz-button nzType="primary" (click)="gotoSubApp2Page3()">goto sub-app2 - page3</button>
+    |
+    <button nz-button nzType="primary" (click)="gotoSubApp2Page4()">goto sub-app2 - page4</button>
+    |
+    <button nz-button nzType="primary" (click)="sendGlobalData()">sendGlobalData</button>
+    |
+    <button nz-button nzType="primary" (click)="sendAppData1()">sendAppData1</button>
+    |
+    <button nz-button nzType="primary" (click)="sendAppData2()">sendAppData2</button>
+    |
+    <button nz-button nzType="primary" (click)="getGlobalData()">getGlobalData</button>
+    |
+    <button nz-button nzType="primary" (click)="getAppData()">getAppData</button>
+    |
+  </nav>
+</div>
+<div>
+  <input nz-input type="text" name="name" required [(ngModel)]="name" style="width: 300px;"> | <label>name: {{ name }}</label>
+</div>
+<div>
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,65 @@
+<!--suppress ALL -->
+<ng-container *ngIf="this.isErrorComponent()">
+  <ng-template [ngTemplateOutlet]="this.errorTemplate || this.maFrameError"></ng-template>
+</ng-container>
+<ng-container *ngIf="this.nonErrorComponent() && this.isInvalidAttributes()">
+  <ng-template [ngTemplateOutlet]="this.maFrameInvalid"></ng-template>
+</ng-container>
+<ng-container *ngIf="this.nonErrorComponent() && this.isEffectiveAttributes()">
+  <ng-template [ngTemplateOutlet]="this.maFrameComponent"></ng-template>
+</ng-container>
+<ng-template #maFrameComponent>
+  <micro-app
+    [attr.baseRoute]="this.baseRoute"
+    [attr.disableSandbox]="this.disableSandbox"
+    [attr.disableScopeCss]="this.disableScopeCss"
+    [attr.keep-alive]="this.keepAlive"
+    [attr.shadowDOM]="this.shadowDom"
+    [attr.destroy]="this.appDestroy"
+    [attr.inline]="this.appInline"
+    [attr.name]="this.appName"
+    [attr.url]="this.appUrl"
+    [attr.ssr]="this.appSsr"
+    (created)="this.handleCreated($event)"
+    (beforemount)="this.handleBeforeMount($event)"
+    (mounted)="this.handleMounted($event)"
+    (unmount)="this.handleUnmount($event)"
+    (error)="this.handleError($event)"
+    (afterhidden)="this.handleAfterHidden($event)"
+    (beforeshow)="this.handleBeforeShow($event)"
+    (aftershow)="this.handleAfterShow($event)"
+  >
+  </micro-app>
+</ng-template>
+<ng-template #maFrameError>
+  <div class="ma-message-container">
+    <div class="ma-message-center">
+      <h1>load component error !</h1>
+      <ng-template [ngTemplateOutlet]="this.maFrameInfo"></ng-template>
+    </div>
+  </div>
+</ng-template>
+<ng-template #maFrameInvalid>
+  <div class="ma-message-container">
+    <div class="ma-message-center">
+      <h1>missing require attributes !</h1>
+      <ng-template [ngTemplateOutlet]="this.maFrameInfo"></ng-template>
+    </div>
+  </div>
+</ng-template>
+<ng-template #maFrameInfo>
+  <ul>
+    <li><label class="ma-attributes-extend">appId</label><span>: </span><span>{{ this.appId }}</span></li>
+    <li><label class="ma-attributes-require">appUrl</label><span>: </span><span>{{ this.appUrl }}</span></li>
+    <li><label class="ma-attributes-internal">appSsr</label><span>: </span><span>{{ this.appSsr }}</span></li>
+    <li><label class="ma-attributes-require">appName</label><span>: </span><span>{{ this.appName }}</span></li>
+    <li><label class="ma-attributes-internal">appInline</label><span>: </span><span>{{ this.appInline }}</span></li>
+    <li><label class="ma-attributes-internal">appDestroy</label><span>: </span><span>{{ this.appDestroy }}</span></li>
+    <li><label class="ma-attributes-require">baseRoute</label><span>: </span><span>{{ this.baseRoute }}</span></li>
+    <li><label class="ma-attributes-extend">autoRoute</label><span>: </span><span>{{ this.autoRoute }}</span></li>
+    <li><label class="ma-attributes-internal">keepAlive</label><span>: </span><span>{{ this.keepAlive }}</span></li>
+    <li><label class="ma-attributes-internal">shadowDom</label><span>: </span><span>{{ this.shadowDom }}</span></li>
+    <li><label class="ma-attributes-internal">disableSandbox</label><span>: </span><span>{{ this.disableSandbox }}</span></li>
+    <li><label class="ma-attributes-internal">disableScopeCss</label><span>: </span><span>{{ this.disableScopeCss }}</span></li>
+  </ul>
+</ng-template>
