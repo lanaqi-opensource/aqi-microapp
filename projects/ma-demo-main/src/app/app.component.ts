@@ -21,19 +21,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.mainService.startFrames();
-    this.mainService.subscribeAppData(dataRecord => {
-      console.log('main-app subscribeAppData->', dataRecord);
-    });
-    this.mainService.subscribeGlobalData(dataRecord => {
-      console.log('main-app subscribeGlobalData->', dataRecord);
-    });
-    this.mainService.subscribeFrameBeforeLoad(frameEvent => {
-      this.loadSubApp = true;
-    });
-    this.mainService.subscribeFrameAfterLoad(frameEvent => {
-      this.loadSubApp = false;
-    });
+
   }
 
   gotoSubApp1(): void {
@@ -98,6 +86,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         keepAlive: false,
         // todo 开启 shadowDom 模式以后 shares 样式则不生效，默认情况下，框架默认不开启 shadowDom 模式
         shadowDom: false,
+        // 开启预加载
+        preFetch: true,
       },
       {
         appUrl: 'http://localhost:4202',
@@ -110,6 +100,21 @@ export class AppComponent implements OnInit, AfterViewInit {
     ];
 
     this.mainService.registerFrames(frameConfigs, true, this.customErrorTemplate);
+
+    this.mainService.startFrames();
+
+    this.mainService.subscribeAppData(dataRecord => {
+      console.log('main-app subscribeAppData->', dataRecord);
+    });
+    this.mainService.subscribeGlobalData(dataRecord => {
+      console.log('main-app subscribeGlobalData->', dataRecord);
+    });
+    this.mainService.subscribeFrameBeforeLoad(frameEvent => {
+      this.loadSubApp = true;
+    });
+    this.mainService.subscribeFrameAfterLoad(frameEvent => {
+      this.loadSubApp = false;
+    });
 
   }
 
