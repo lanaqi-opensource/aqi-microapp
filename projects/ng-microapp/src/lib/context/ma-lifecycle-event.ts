@@ -1,6 +1,6 @@
 import { MaFrameComponent } from './ma-frame.component';
 
-export interface MaFrameEvent {
+export interface MaLifecycleEvent {
 
   customEvent: CustomEvent;
 

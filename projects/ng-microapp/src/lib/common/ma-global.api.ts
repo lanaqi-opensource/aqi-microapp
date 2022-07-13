@@ -3,7 +3,7 @@ import { unmountAppParams } from '@micro-zoe/micro-app/micro_app';
 
 export class MaGlobalApi {
 
-  public static version: string = version;
+  public static readonly version: string = version;
 
   private constructor() {
   }

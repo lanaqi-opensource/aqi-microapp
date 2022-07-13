@@ -1,13 +1,12 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { NavigationBehaviorOptions, NavigationExtras, UrlTree } from '@angular/router';
 
+import { MaErrorHandler } from '../common/ma-error-handler';
+import { MaCompleteHandler } from '../common/ma-complete-handler';
 import { MaSubApi } from '../common/ma-sub.api';
 import { MaEnvironmentApi } from '../common/ma-environment.api';
 import { MaTypeUtil } from '../common/ma-type-util';
 
-import { MaErrorHandler } from '../context/ma-error-handler';
-import { MaCompleteHandler } from '../context/ma-complete-handler';
-import { MaRouteService } from '../context/ma-route.service';
 import { MaRouteUtil } from '../context/ma-route-util';
 
 import { MaDataRecord } from '../dataset/ma-data-record';
@@ -16,10 +15,11 @@ import { MaDataStruct } from '../dataset/ma-data-struct';
 import { MaDataPackage } from '../dataset/ma-data-package';
 import { MaDataUtil } from '../dataset/ma-data-util';
 
-import { MaInfoStruct } from '../inside/ma-info-struct';
+import { MaInfoMessage } from '../inside/ma-info-message';
 import { MaInfoHeader } from '../inside/ma-info-header';
 import { MaInfoPackage } from '../inside/ma-info-package';
 
+import { MaRouteService } from './ma-route.service';
 import { MaSubUtil } from './ma-sub-util';
 
 @Injectable({
@@ -27,7 +27,7 @@ import { MaSubUtil } from './ma-sub-util';
 })
 export class MaSubService {
 
-  private isFrameStart: boolean = false;
+  private frameIsRun: boolean = false;
 
   private keepAliveUrl: string = '';
 
@@ -43,14 +43,14 @@ export class MaSubService {
   }
 
   public sendAppData(externalData: MaDataRecord): void {
-    if (this.isFrameStart) {
+    if (this.frameIsRun) {
       this.cacheAppData = externalData;
       MaSubUtil.setAppExternal(externalData);
     }
   }
 
   public gainAppData(): MaDataRecord {
-    if (this.isFrameStart) {
+    if (this.frameIsRun) {
       return MaSubUtil.getAppExternal();
     }
     return {} as MaDataRecord;
@@ -64,30 +64,11 @@ export class MaSubService {
     this.sendAppData(MaDataUtil.mergeDataRecord(this.cacheAppData, externalData));
   }
 
-  public sendGlobalData(externalData: MaDataRecord): void {
-    if (this.isFrameStart) {
-      this.cacheGlobalData = externalData;
-      MaSubUtil.setGlobalExternal(externalData);
-    }
-  }
-
-  public gainGlobalData(): MaDataRecord {
-    if (this.isFrameStart) {
-      return MaSubUtil.getGlobalExternal();
-    }
-    return {} as MaDataRecord;
-  }
-
-  public cleanGlobalData(): void {
-    this.sendGlobalData({} as MaDataRecord);
-  }
-
-  public changeGlobalData(externalData: MaDataRecord): void {
-    this.sendGlobalData(MaDataUtil.mergeDataRecord(this.cacheGlobalData, externalData));
-  }
-
   private dispatchAppData(infoPackage: MaInfoPackage): void {
     MaSubUtil.setAppInternal(infoPackage, this.cacheAppData);
+  }
+
+  private defaultAppData(dataContent: MaDataRecord): void {
   }
 
   private acceptAppData(infoPackage: MaInfoPackage): void {
@@ -107,8 +88,46 @@ export class MaSubService {
     }
   }
 
+  private handleAppData(dataRecord: MaDataRecord): void {
+    const dataPackage: MaDataPackage = MaDataPackage.buildPackage(dataRecord as MaDataStruct);
+    if (dataPackage.isInternal()) {
+      this.acceptAppData(MaInfoPackage.buildPackage(dataPackage.getInternal() as MaInfoMessage));
+    } else {
+      this.appDataEmitter.emit(dataPackage.getExternal());
+    }
+  }
+
+  public subscribeAppData(dataHandler: MaDataHandler, errorHandler?: MaErrorHandler, completeHandler?: MaCompleteHandler): void {
+    this.appDataEmitter.subscribe(dataHandler, errorHandler, completeHandler);
+  }
+
+  public sendGlobalData(externalData: MaDataRecord): void {
+    if (this.frameIsRun) {
+      this.cacheGlobalData = externalData;
+      MaSubUtil.setGlobalExternal(externalData);
+    }
+  }
+
+  public gainGlobalData(): MaDataRecord {
+    if (this.frameIsRun) {
+      return MaSubUtil.getGlobalExternal();
+    }
+    return {} as MaDataRecord;
+  }
+
+  public cleanGlobalData(): void {
+    this.sendGlobalData({} as MaDataRecord);
+  }
+
+  public changeGlobalData(externalData: MaDataRecord): void {
+    this.sendGlobalData(MaDataUtil.mergeDataRecord(this.cacheGlobalData, externalData));
+  }
+
   private dispatchGlobalData(infoPackage: MaInfoPackage): void {
     MaSubUtil.setGlobalInternal(infoPackage, this.cacheGlobalData);
+  }
+
+  private defaultGlobalData(dataContent: MaDataRecord): void {
   }
 
   private acceptGlobalData(infoPackage: MaInfoPackage): void {
@@ -122,10 +141,17 @@ export class MaSubService {
     }
   }
 
-  private defaultAppData(dataContent: MaDataRecord): void {
+  private handleGlobalData(dataRecord: MaDataRecord): void {
+    const dataPackage: MaDataPackage = MaDataPackage.buildPackage(dataRecord as MaDataStruct);
+    if (dataPackage.isInternal()) {
+      this.acceptGlobalData(MaInfoPackage.buildPackage(dataPackage.getInternal() as MaInfoMessage));
+    } else {
+      this.globalDataEmitter.emit(dataPackage.getExternal());
+    }
   }
 
-  private defaultGlobalData(dataContent: MaDataRecord): void {
+  public subscribeGlobalData(dataHandler: MaDataHandler, errorHandler?: MaErrorHandler, completeHandler?: MaCompleteHandler): void {
+    this.globalDataEmitter.subscribe(dataHandler, errorHandler, completeHandler);
   }
 
   private keepAliveAfterHidden(dataContent: MaDataRecord): void {
@@ -149,88 +175,55 @@ export class MaSubService {
   }
 
   public navigateByCommands(commands: any[], extras?: NavigationExtras): void {
-    if (this.isFrameStart) {
+    if (this.frameIsRun) {
       this.dispatchAppData(MaInfoPackage.buildPackage({
         dataHeader: MaInfoHeader.navigateByCommands,
         dataContent: {
           commands: commands,
           extras: extras,
         } as MaDataRecord,
-      } as MaInfoStruct));
+      } as MaInfoMessage));
     } else {
       this.routeService.navigateByCommands(commands, extras);
     }
   }
 
   public navigateByUrl(url: string | UrlTree, extras?: NavigationBehaviorOptions): void {
-    if (this.isFrameStart) {
+    if (this.frameIsRun) {
       this.dispatchAppData(MaInfoPackage.buildPackage({
         dataHeader: MaInfoHeader.navigateByUrl,
         dataContent: {
           url: url,
           extras: extras,
         } as MaDataRecord,
-      } as MaInfoStruct));
+      } as MaInfoMessage));
     } else {
       this.routeService.navigateByUrl(url, extras);
     }
   }
 
   public navigateByApp(appName: string, appPath: string = ''): void {
-    if (this.isFrameStart && MaTypeUtil.nonEmptyString(appName)) {
+    if (this.frameIsRun && MaTypeUtil.nonEmptyString(appName)) {
       if (MaTypeUtil.nonEmptyString(appPath) && (appPath.indexOf('/') === 0)) {
         appPath = appPath.substr(1, appPath.length);
       }
-      const url: string = `/${MaRouteUtil.MATCH_APP_ROUTE}/${appName}/${appPath}`;
+      const url: string = `/${MaRouteUtil.APP_ROUTE_PATH}/${appName}/${appPath}`;
       this.dispatchAppData(MaInfoPackage.buildPackage({
         dataHeader: MaInfoHeader.navigateByUrl,
         dataContent: {
           url: url,
         } as MaDataRecord,
-      } as MaInfoStruct));
+      } as MaInfoMessage));
     }
   }
 
-  private handleAppData(dataRecord: MaDataRecord): void {
-    const dataPackage: MaDataPackage = MaDataPackage.buildPackage(dataRecord as MaDataStruct);
-    if (dataPackage.isInternal()) {
-      this.acceptAppData(MaInfoPackage.buildPackage(dataPackage.getInternal() as MaInfoStruct));
-    } else {
-      this.appDataEmitter.emit(dataPackage.getExternal());
-    }
-  }
-
-  public subscribeAppData(dataHandler: MaDataHandler, errorHandler?: MaErrorHandler, completeHandler?: MaCompleteHandler): void {
-    this.appDataEmitter.subscribe(dataHandler, errorHandler, completeHandler);
-  }
-
-  private handleGlobalData(dataRecord: MaDataRecord): void {
-    const dataPackage: MaDataPackage = MaDataPackage.buildPackage(dataRecord as MaDataStruct);
-    if (dataPackage.isInternal()) {
-      this.acceptGlobalData(MaInfoPackage.buildPackage(dataPackage.getInternal() as MaInfoStruct));
-    } else {
-      this.globalDataEmitter.emit(dataPackage.getExternal());
-    }
-  }
-
-  public subscribeGlobalData(dataHandler: MaDataHandler, errorHandler?: MaErrorHandler, completeHandler?: MaCompleteHandler): void {
-    this.globalDataEmitter.subscribe(dataHandler, errorHandler, completeHandler);
-  }
-
-  private appendEmptyRoutes(): void {
-    this.routeService.appendRoutes([MaRouteUtil.buildEmptyRoute()]);
-  }
-
-  public startFrame(emptyRoute: boolean = true): void {
+  public startFrame(): void {
     if (MaEnvironmentApi.isAppEnvironment()) {
       MaSubApi.addDataListener(this.handleAppData.bind(this), true);
       MaSubApi.addGlobalDataListener(this.handleGlobalData.bind(this), true);
-      this.isFrameStart = true;
+      this.frameIsRun = true;
     } else {
-      this.isFrameStart = false;
-    }
-    if (emptyRoute) {
-      this.appendEmptyRoutes();
+      this.frameIsRun = false;
     }
   }
 

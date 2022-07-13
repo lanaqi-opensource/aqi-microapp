@@ -1,7 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
-import { MaLocationUtil } from '../context/ma-location-util';
-
+import { MaLocationUtil } from '../support/ma-location-util';
 import { MaMainService } from '../support/ma-main.service';
 
 import { MaContextModule } from './ma-context.module';

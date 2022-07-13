@@ -16,13 +16,13 @@ export interface MaFrameConfig {
 
   shadowDom?: boolean;
 
-  baseRoute?: string;
-
-  autoRoute?: boolean;
-
   disableSandbox?: boolean;
 
   disableScopeCss?: boolean;
+
+  baseRoute?: string;
+
+  autoRoute?: boolean;
 
   preFetch?: boolean;
 

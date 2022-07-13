@@ -6,6 +6,6 @@ export interface MaBootstrapOption {
 
   readonly ngZoneEventCoalescing: boolean;
 
-  readonly  ngZoneRunCoalescing: boolean;
+  readonly ngZoneRunCoalescing: boolean;
 
 }

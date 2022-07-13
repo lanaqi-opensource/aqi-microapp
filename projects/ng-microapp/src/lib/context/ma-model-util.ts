@@ -4,7 +4,7 @@ import { MaFrameConfig } from './ma-frame-config';
 import { MaFrameDefine } from './ma-frame-define';
 import { MaFrameModel } from './ma-frame-model';
 
-export class MaFrameUtil {
+export class MaModelUtil {
 
   private constructor() {
   }
@@ -20,7 +20,7 @@ export class MaFrameUtil {
     const frameModels: MaFrameModel[] = [];
     if (MaTypeUtil.nonEmptyArray(frameConfigs)) {
       frameConfigs.forEach(frameConfig => {
-        frameModels.push(MaFrameUtil.buildFrameModel(frameConfig, frameDefine));
+        frameModels.push(MaModelUtil.buildFrameModel(frameConfig, frameDefine));
       });
     }
     return frameModels;

@@ -4,7 +4,7 @@ import { MaDataRecord } from '../dataset/ma-data-record';
 import { MaDataStruct } from '../dataset/ma-data-struct';
 import { MaDataPackage } from '../dataset/ma-data-package';
 
-import { MaInfoStruct } from '../inside/ma-info-struct';
+import { MaInfoMessage } from '../inside/ma-info-message';
 import { MaInfoPackage } from '../inside/ma-info-package';
 
 export class MaSubUtil {
@@ -33,7 +33,7 @@ export class MaSubUtil {
   }
 
   public static getAppInternal(): MaInfoPackage {
-    return MaInfoPackage.buildPackage(MaSubUtil.getAppData().getInternal() as MaInfoStruct)
+    return MaInfoPackage.buildPackage(MaSubUtil.getAppData().getInternal() as MaInfoMessage)
   }
 
   public static setGlobalData(dataPackage: MaDataPackage): void {
@@ -57,7 +57,7 @@ export class MaSubUtil {
   }
 
   public static getGlobalInternal(): MaInfoPackage {
-    return MaInfoPackage.buildPackage(MaSubUtil.getGlobalData().getInternal() as MaInfoStruct)
+    return MaInfoPackage.buildPackage(MaSubUtil.getGlobalData().getInternal() as MaInfoMessage)
   }
 
 }

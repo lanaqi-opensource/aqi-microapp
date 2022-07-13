@@ -5,8 +5,9 @@ import { MaTypeUtil } from '../common/ma-type-util';
 
 import { MaEmptyComponent } from '../context/ma-empty.component';
 import { MaFrameComponent } from '../context/ma-frame.component';
-import { MaRouteService } from '../context/ma-route.service';
-import { MaLocationUtil } from '../context/ma-location-util';
+
+import { MaRouteService } from '../support/ma-route.service';
+import { MaLocationUtil } from '../support/ma-location-util';
 
 @NgModule({
   schemas: [

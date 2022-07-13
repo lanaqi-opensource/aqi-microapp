@@ -8,10 +8,12 @@
 - @angular/cli@11.x.x
 - @angular/cli@12.x.x
 - @angular/cli@13.x.x (不兼容)
+- @angular/cli@14.x.x (不兼容)
 
 - @angular-builders/custom-webpack@11.x.x
 - @angular-builders/custom-webpack@12.x.x
 - @angular-builders/custom-webpack@13.x.x (不兼容)
+- @angular-builders/custom-webpack@14.x.x (不兼容)
 
 ## 根项目
 

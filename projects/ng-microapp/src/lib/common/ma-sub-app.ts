@@ -2,9 +2,9 @@ import { EventCenterForMicroApp } from '@micro-zoe/micro-app';
 
 export interface MaSubApp extends EventCenterForMicroApp {
 
-  rawWindow?: string;
+  readonly rawWindow?: string;
 
-  rawDocument?: string;
+  readonly rawDocument?: string;
 
   removeDomScope(): void;
 

@@ -24,7 +24,7 @@ export class MaRouteService {
     }
   }
 
-  public appendRoutes(mergeRoutes: Routes): void {
+  public resetRoutes(mergeRoutes: Routes): void {
     this.backupRoutes();
     const cloneRoutes: Routes = [];
     if (MaTypeUtil.nonEmptyArray(this.originRoutes)) {

@@ -1,31 +1,30 @@
-import { TemplateRef } from '@angular/core';
-
-import { MaFrameHandler } from './ma-frame-handler';
+import { MaLifecycleHandler } from './ma-lifecycle-handler';
+import { MaTemplateLoader } from './ma-template-loader';
 
 export interface MaFrameDefine {
 
-  errorTemplate?: TemplateRef<void>;
+  errorTemplateEnable?: boolean;
 
-  errorSupported?: boolean;
+  errorTemplateLoader?: MaTemplateLoader;
 
-  onCreatedHandler?: MaFrameHandler;
+  onCreatedHandler?: MaLifecycleHandler;
 
-  onBeforeMountHandler?: MaFrameHandler;
+  onBeforeMountHandler?: MaLifecycleHandler;
 
-  onMountedHandler?: MaFrameHandler;
+  onMountedHandler?: MaLifecycleHandler;
 
-  onUnmountHandler?: MaFrameHandler;
+  onUnmountHandler?: MaLifecycleHandler;
 
-  onErrorHandler?: MaFrameHandler;
+  onErrorHandler?: MaLifecycleHandler;
 
-  onAfterHiddenHandler?: MaFrameHandler;
+  onAfterHiddenHandler?: MaLifecycleHandler;
 
-  onBeforeShowHandler?: MaFrameHandler;
+  onBeforeShowHandler?: MaLifecycleHandler;
 
-  onAfterShowHandler?: MaFrameHandler;
+  onAfterShowHandler?: MaLifecycleHandler;
 
-  onBeforeLoadHandler?: MaFrameHandler;
+  onBeforeLoadHandler?: MaLifecycleHandler;
 
-  onAfterLoadHandler?: MaFrameHandler;
+  onAfterLoadHandler?: MaLifecycleHandler;
 
 }

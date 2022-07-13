@@ -2,7 +2,7 @@ import { MaTypeUtil } from '../common/ma-type-util';
 
 import { MaDataRecord } from '../dataset/ma-data-record';
 
-import { MaInfoStruct } from './ma-info-struct';
+import { MaInfoMessage } from './ma-info-message';
 import { MaInfoHeader } from './ma-info-header';
 
 export class MaInfoPackage {
@@ -24,18 +24,18 @@ export class MaInfoPackage {
     return this.dataContent;
   }
 
-  public toMessage(): MaInfoStruct {
+  public toMessage(): MaInfoMessage {
     return {
       dataHeader: this.dataHeader ?? MaInfoHeader.unknown,
       dataContent: this.dataContent ?? {} as MaDataRecord,
-    } as MaInfoStruct;
+    } as MaInfoMessage;
   }
 
-  public static buildPackage(infoStruct: MaInfoStruct | undefined | null): MaInfoPackage {
-    if (MaTypeUtil.isObject(infoStruct)) {
+  public static buildPackage(infoMessage: MaInfoMessage | undefined | null): MaInfoPackage {
+    if (MaTypeUtil.isObject(infoMessage)) {
       return new MaInfoPackage(
-        infoStruct?.dataHeader ?? MaInfoHeader.unknown,
-        infoStruct?.dataContent ?? {} as MaDataRecord,
+        infoMessage?.dataHeader ?? MaInfoHeader.unknown,
+        infoMessage?.dataContent ?? {} as MaDataRecord,
       );
     } else {
       return new MaInfoPackage(MaInfoHeader.unknown, {} as MaDataRecord);

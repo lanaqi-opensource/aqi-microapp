@@ -14,10 +14,10 @@ export * from './lib/common/ma-bootstrap.api';
 
 export * from './lib/context/ma-empty.component';
 export * from './lib/context/ma-frame.component';
-export * from './lib/context/ma-route.service';
 
 // support
 
+export * from './lib/support/ma-route.service';
 export * from './lib/support/ma-main.service';
 export * from './lib/support/ma-sub.service';
 
